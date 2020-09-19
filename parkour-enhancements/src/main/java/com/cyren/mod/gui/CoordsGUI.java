@@ -53,19 +53,8 @@ public class CoordsGUI extends Gui {
 	boolean shiftPressed;
 	boolean jumpPressed;
 	
-	boolean frameForwardPressed;
-	boolean frameJumpPressed;
-	long ms;
-	long wTime;
-	long framewTime;
 	long hhms;
 	long hhTicks;
-	boolean waiting;
-	boolean wasJumpPressed;
-	boolean wasForwardPressed;
-	boolean frameWasForwardPressed;
-	boolean frameWasJumpPressed;
-	boolean frameWaiting;
 	
 	@SubscribeEvent
 	public void clientTick(ClientTickEvent event) {
@@ -144,7 +133,7 @@ public class CoordsGUI extends Gui {
         		
         		if (lookingAtBarrier & Config.enabledBarrierWarning) {
     				GlStateManager.scale(2, 2, 2);
-        			renderer.drawString("��4!", width - 3, 2, 1);
+        			renderer.drawString("\u00a4!", width - 3, 2, 1);
     				GlStateManager.scale(0.5, 0.5, 0.5);
         		}
         	}
