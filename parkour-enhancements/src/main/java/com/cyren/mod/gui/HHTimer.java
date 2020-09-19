@@ -29,11 +29,13 @@ public class HHTimer{
 	  
 	public boolean isLocked_ticks;
 	  
-	public long ms;
+	private long ms;
 	  
 	private long ticks;
 	  
 	public long finalTicks;
+	
+	public long finalms;
 	  
 	public Date date = new Date();
 
@@ -82,6 +84,7 @@ public class HHTimer{
 	        if (!this.lastStateJump_ticks) {
 	          if (!this.isLocked_ticks) {
 	            this.finalTicks = this.ticks;
+	            this.finalms = this.ms;
 	            this.isLocked_ticks = true;
 	          } 
 	          this.state_keyForeward_ticks = false;
@@ -94,7 +97,7 @@ public class HHTimer{
 	  }
 	
 	public long getMs() {
-	    return this.ms;
+	    return this.finalms;
 	}
 	
 	public long getTicks() {

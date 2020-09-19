@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import com.cyren.mod.config.Config;
 
 import net.minecraft.client.Minecraft;
@@ -21,7 +18,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-
 
 public class CoordsGUI extends Gui {
 	
@@ -74,8 +70,11 @@ public class CoordsGUI extends Gui {
 	@SubscribeEvent
 	public void clientTick(ClientTickEvent event) {
 		
-		if(event.phase == Phase.END)
+		if(event.phase == Phase.END) {
+			hhms = hhTimer.getMs();
+			hhTicks = hhTimer.getTicks();
 			return;
+		}
 		
 		hhTimer.onTick();
 		EntityPlayerSP player = mc.thePlayer;
@@ -88,14 +87,6 @@ public class CoordsGUI extends Gui {
 		posZ = df.format(player.posZ);
 		v_xz = Math.sqrt(Math.pow((player.posX - player.lastTickPosX), 2) + Math.pow((player.posZ - player.lastTickPosZ), 2));
 		
-		forwardPressed = false;
-		leftPressed = false;
-		backPressed = false;
-		rightPressed = false;
-		sprintPressed = false;
-		shiftPressed = false;
-		jumpPressed = false;
-		
 		lookingAtBarrier = false;
 		if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.mc.objectMouseOver.getBlockPos() != null) {
 			if (mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock().getRegistryName().equals("minecraft:barrier")) {
@@ -104,23 +95,13 @@ public class CoordsGUI extends Gui {
 		}
 		
 		// Checks if keys are pressed that tick
-		if (mc.gameSettings.keyBindForward.isKeyDown())
-			forwardPressed = true;
-		if (mc.gameSettings.keyBindLeft.isKeyDown())
-			leftPressed = true;
-		if (mc.gameSettings.keyBindBack.isKeyDown())
-			backPressed = true;
-		if (mc.gameSettings.keyBindRight.isKeyDown())
-			rightPressed = true;
-		if (mc.gameSettings.keyBindSprint.isKeyDown())
-			sprintPressed = true;
-		if (mc.gameSettings.keyBindSneak.isKeyDown())
-			shiftPressed = true;
-		if (mc.gameSettings.keyBindJump.isKeyDown())
-			jumpPressed = true;
-		
-		hhms = hhTimer.getMs();
-		hhTicks = hhTimer.getTicks();
+		forwardPressed = mc.gameSettings.keyBindForward.isKeyDown();
+		leftPressed = mc.gameSettings.keyBindLeft.isKeyDown();
+		backPressed = mc.gameSettings.keyBindBack.isKeyDown();
+		rightPressed = mc.gameSettings.keyBindRight.isKeyDown();
+		sprintPressed = mc.gameSettings.keyBindSprint.isKeyDown();
+		shiftPressed = mc.gameSettings.keyBindSneak.isKeyDown();
+		jumpPressed = mc.gameSettings.keyBindJump.isKeyDown();
 		
 	}
 	
@@ -155,15 +136,15 @@ public class CoordsGUI extends Gui {
         	// Draws the coords/hh timing GUI
         	if (!mc.gameSettings.showDebugInfo) {
         		drawCoordElement(2, 2, String.format(convertedhhFormat, hhms, hhTicks), 2);
-        		drawCoordElement(2, 13, "Åò7Facing: Åòe" + facing + "Åò7 (Åòe" + direction + "Åò7)", 2);
-        		drawCoordElement(2, 24, "Åò7Velocity: Åòe" + (Config.enabledBlocksPerSecond ? df.format(v_xz * 20) + "Åò7 b/s" : df.format(v_xz)) + "Åò7 b/t", 2);
-        		drawCoordElement(2, 35, "Åò7X: Åòe" + posX, 2);
-        		drawCoordElement(2, 46, "Åò7Y: Åòe" + posY, 2);
-        		drawCoordElement(2, 57, "Åò7Z: Åòe" + posZ, 2);
+        		drawCoordElement(2, 13, "\u00a77Facing: \u00a7e" + facing + "\u00a77 (\u00a7e" + direction + "\u00a77)", 2);
+        		drawCoordElement(2, 24, "\u00a77Velocity: \u00a7e" + (Config.enabledBlocksPerSecond ? df.format(v_xz * 20) + "\u00a77 b/s" : df.format(v_xz)) + "\u00a77 b/t", 2);
+        		drawCoordElement(2, 35, "\u00a77X: \u00a7e" + posX, 2);
+        		drawCoordElement(2, 46, "\u00a77Y: \u00a7e" + posY, 2);
+        		drawCoordElement(2, 57, "\u00a77Z: \u00a7e" + posZ, 2);
         		
         		if (lookingAtBarrier & Config.enabledBarrierWarning) {
     				GlStateManager.scale(2, 2, 2);
-        			renderer.drawString("Åò4!", width - 3, 2, 1);
+        			renderer.drawString("ÔøΩÔøΩ4!", width - 3, 2, 1);
     				GlStateManager.scale(0.5, 0.5, 0.5);
         		}
         	}

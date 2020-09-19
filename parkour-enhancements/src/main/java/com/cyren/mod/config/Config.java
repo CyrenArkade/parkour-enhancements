@@ -164,7 +164,7 @@ public class Config {
 		category = "settings";
 		Property propertyEnabledKeystrokes = config.get(category, "enabledKeystrokes", true);
 		Property propertyCoordFormat = config.get(category, "coordPrecision", 6);
-		Property propertyhhFormat = config.get(category, "hhFormat", "Åò7HH-Timing: ÅòehhTimeÅò7 ms (ÅòehhTicksÅò7 ticks)");
+		Property propertyhhFormat = config.get(category, "hhFormat", "\u00a77HH-Timing: \u00a7ehhTime\u00a77 ms (\u00a7ehhTicks\u00a77 ticks)");
 		Property propertyEnabledBarrierWarning = config.get(category, "enabledBarrierWarning", true);
 		Property propertyEnabledBlocksPerSecond = config.get(category, "enabledBlocksPerSecond", false);
 		
