@@ -10,8 +10,6 @@ public class ClientProxy extends CommonProxy{
 
 	public void preInit(FMLPreInitializationEvent preEvent) {
 		
-		Config.clientPreInit();
-		
 		super.preInit(preEvent);
 		
 	}

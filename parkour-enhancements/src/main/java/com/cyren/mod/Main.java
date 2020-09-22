@@ -6,6 +6,7 @@ import com.cyren.mod.proxy.CommonProxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = NGGlobal.MOD_ID, name = NGGlobal.MOD_NAME, version = NGGlobal.VERSION)
+@Mod(modid = NGGlobal.MOD_ID, name = NGGlobal.MOD_NAME, version = NGGlobal.VERSION, guiFactory = NGGlobal.NG_GUI_FACTORY)
 public class Main {
 	
 	@Instance(NGGlobal.MOD_ID)
@@ -28,7 +29,11 @@ public class Main {
 	@EventHandler
 	public void preInit (FMLPreInitializationEvent preEvent) {
 		
-		Config.preInit();
+		// Config.preInit();
+		
+		Config.init(preEvent.getSuggestedConfigurationFile());
+
+        MinecraftForge.EVENT_BUS.register(new Config());
 		
 		this.proxy.preInit(preEvent);
 		
