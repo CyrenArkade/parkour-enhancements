@@ -5,7 +5,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import com.cyren.mod.NGGlobal;
+import com.cyren.mod.Vars;
 import com.cyren.mod.config.Config;
+import com.cyren.mod.offset.Offset;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -13,7 +15,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -85,6 +89,36 @@ public class CoordsGUI extends Gui {
 		posZ = df.format(player.posZ);
 		v_xz = Math.sqrt(Math.pow((player.posX - player.lastTickPosX), 2) + Math.pow((player.posZ - player.lastTickPosZ), 2));
 		
+		// Handles player offset and showing it in chat
+		if (player.posY <= Vars.lbMaxY && player.lastTickPosY > Vars.lbMaxY && Vars.condMinX < player.lastTickPosX && player.lastTickPosX < Vars.condMaxX && Vars.condMinZ < player.lastTickPosZ && player.lastTickPosZ < Vars.condMaxZ && player.lastTickPosX >= Vars.lbMinX - 1.0D && player.lastTickPosX <= Vars.lbMaxX + 1.0D && player.lastTickPosZ >= Vars.lbMinZ - 1.0D && player.lastTickPosZ <= Vars.lbMaxZ + 1.0D) {
+
+			double lbXOff = Math.min(Vars.lbMaxX - player.lastTickPosX, player.lastTickPosX - Vars.lbMinX);
+			double lbZOff = Math.min(Vars.lbMaxZ - player.lastTickPosZ, player.lastTickPosZ - Vars.lbMinZ);
+			double lbXZOff = Math.sqrt(Math.pow(lbXOff, 2.0D) + Math.pow(lbZOff, 2.0D));
+			double pb;
+
+			if (Vars.lbXZType == 0) {
+				if (lbXOff <= 0.0D && lbZOff <= 0.0D) pb = -lbXZOff;
+				else if (lbXOff > 0.0D && lbZOff > 0.0D) pb = lbXZOff;
+				else pb = Math.min(lbZOff, lbXOff);
+			} else if (Vars.lbXZType == 1) {
+				pb = lbXOff;
+			} else {
+				pb = lbZOff;
+			}
+
+			if (pb > Vars.lbPb) {
+				player.addChatMessage(new ChatComponentText("New pb ! " + pb));
+				Vars.lbPb = pb;
+			}
+
+			String str = "\u00a7lX offset\u00a7r: " + df.format(lbXOff);
+			if (Vars.lbXZType == 2) str = "\u00a7lZ offset\u00a7r: " + df.format(lbZOff);
+			else if (Vars.lbXZType == 0) str += "\n\u00a7lZ offset\u00a7r: " + df.format(lbZOff);
+
+			player.addChatMessage(new ChatComponentText(str));
+		}
+		
 		// Checks if keys are pressed that tick
 		forwardPressed = mc.gameSettings.keyBindForward.isKeyDown();
 		leftPressed = mc.gameSettings.keyBindLeft.isKeyDown();
@@ -131,8 +165,8 @@ public class CoordsGUI extends Gui {
         		drawCoordElement(Config.locationXTextX, Config.locationXTextY, textTextColor + "X: " + textNumberColor + posX, 2);
         		drawCoordElement(Config.locationYTextX, Config.locationYTextY, textTextColor + "Y: " + textNumberColor + posY, 2);
         		drawCoordElement(Config.locationZTextX, Config.locationZTextY, textTextColor + "Z: " + textNumberColor + posZ, 2);
+        		drawCoordElement(Config.locationFPSTextX, Config.locationFPSTextY, textTextColor + "FPS: " + textNumberColor + mc.getDebugFPS(), 2);
         		
-        		System.out.println(lookingAtBarrier);
         		if (lookingAtBarrier & Config.enabledBarrierWarning) {
     				GlStateManager.scale(2, 2, 2);
         			renderer.drawString("\u00a7c!", width / 2 - 3, 2, 1);

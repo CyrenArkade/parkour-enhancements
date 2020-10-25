@@ -37,6 +37,8 @@ public class Config {
 	public static int locationYTextY;
 	public static int locationZTextX;
 	public static int locationZTextY;
+	public static int locationFPSTextX;
+	public static int locationFPSTextY;
 
 	public static String keyTextColor;
 	public static String keyBackgroundColor;
@@ -113,6 +115,8 @@ public class Config {
 		locationYTextY = config.getInt("locationYTextY", category, 46, -100, 10000, "Y distance from the top left");
 		locationZTextX = config.getInt("locationZTextX", category, 2, -100, 10000, "X distance from the top left");
 		locationZTextY = config.getInt("locationZTextY", category, 57, -100, 10000, "Y distance from the top left");
+		locationFPSTextX = config.getInt("locationFPSTextX", category, 2, -100, 10000, "X distance from the top left");
+		locationFPSTextY = config.getInt("locationFPSTextY", category, 68, -100, 10000, "Y distance from the top left");
 		
 		category = "Keystrokes Color";
 		config.addCustomCategoryComment(category, "Change the color of the keystrokes");
