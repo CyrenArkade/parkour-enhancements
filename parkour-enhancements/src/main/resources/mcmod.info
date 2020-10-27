@@ -8,7 +8,7 @@
   "url": "",
   "updateUrl": "",
   "authorList": ["CyrenArkade"],
-  "credits": "Thanks to the original parkour client for the motivation",
+  "credits": "Yoinked offset code (with permission) from kurrycat",
   "logoFile": "",
   "screenshots": [],
   "dependencies": [
